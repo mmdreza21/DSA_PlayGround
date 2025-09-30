@@ -55,12 +55,6 @@ export class ArraysController {
     return this.arraysService.reverse(body.deepClone);
   }
 
-  @Get('reverse2')
-  @ApiOperation({ summary: 'Reverse array using second approach' })
-  reverse2() {
-    return this.arraysService.reverse2();
-  }
-
   @Post('insertAt')
   @ApiOperation({ summary: 'Insert item at specific index' })
   @ApiBody({ type: InsertAtDto })
