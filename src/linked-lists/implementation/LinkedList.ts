@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 class ListNode {
   constructor(
@@ -32,19 +32,181 @@ export class LinkedList {
     }
     this.size++;
   }
-  //   public deleteFirst(): number | undefined {}
-  private getPrevious(node: ListNode) {}
-  public deleteLast() {}
-  public remove(value: number) {}
-  //   public indexOf(value: number): number {}
-  //   public contain(value: number): boolean {}
-  public toArray() {}
-  public reverse(): void {}
-  public getKThFromEnd(n: number) {}
-  public printMiddle() {}
-  //   public hasLoop(): boolean {}
-  public createLoop() {}
-  public createLoopToK(k: number): void {}
+  public deleteFirst(): number | null {
+    if (this.isEmpty())
+      throw new BadRequestException('the Linked list is empty!');
+    const first = this.first!.value;
+    if (this.first === this.last) {
+      this.first = this.last = null;
+      return first;
+    }
+
+    const next = this.first!.next;
+    this.first!.next = null;
+    this.first = next;
+
+    this.size--;
+    return first;
+  }
+  private getPrevious(node: ListNode): ListNode | null {
+    let current = this.first;
+    while (current?.next) {
+      if (current.next === node) return current;
+      current = current!.next;
+    }
+    return null;
+  }
+  public deleteLast(): number | null {
+    if (this.isEmpty())
+      throw new BadRequestException('the Linked list is empty!');
+    const last = this.last!.value;
+    if (this.first === this.last) {
+      this.first = this.last = null;
+      return last;
+    }
+
+    const pre = this.getPrevious(this.last!);
+    this.last = pre;
+    pre!.next = null;
+    return last;
+  }
+
+  public remove(value: number): number | null {
+    if (this.isEmpty())
+      throw new BadRequestException('the Linked list is empty!');
+    if (value === this.first?.value) return this.deleteFirst();
+    if (value === this.last?.value) return this.deleteLast();
+
+    let current = this.first;
+    let prev: ListNode | null = null;
+    while (current) {
+      let next = current.next;
+
+      if (+current.value === +value) {
+        prev!.next = next;
+        return current.value;
+      }
+      prev = current;
+      current = next;
+    }
+    return null;
+  }
+
+  public indexOf(value: number): number {
+    if (this.isEmpty())
+      throw new BadRequestException('the Linked list is empty!');
+
+    let counter = 0;
+    let current = this.first;
+
+    while (current) {
+      if (current.value === value) return counter;
+      current = current!.next;
+      counter++;
+    }
+    return -1;
+  }
+
+  public contain(value: number): boolean {
+    //     if (this.isEmpty())
+    //       throw new BadRequestException('the Linked list is empty!');
+
+    //     let current = this.first
+    //     while(current){
+    //       if(current.value=== value) return true
+    //       current=current!.next
+    //     }
+    // return false
+    return this.indexOf(value) !== -1;
+  }
+
+  public toArray(): Array<number> {
+    const arr = new Array<number>();
+
+    let current = this.first;
+    while (current) {
+      arr.push(current.value);
+      current = current.next;
+    }
+    return arr;
+  }
+
+  public reverse(): void {
+    if (this.isEmpty()) return;
+    let current = this.first;
+    let prev: ListNode | null = null;
+
+    while (current) {
+      const next = current.next;
+
+      current.next = prev;
+
+      prev = current;
+      current = next;
+    }
+
+    this.last = this.first;
+    this.first = prev;
+  }
+
+  public getKThFromEnd(n: number): number | null {
+    if (this.isEmpty()) return null;
+    if (n === this.size) return this.first!.value;
+
+    let current = this.first?.next;
+    let distance = n - 1;
+
+    while (distance--) current = current!.next;
+
+    let prev = this.first;
+    while (current) {
+      prev = prev!.next;
+      current = current.next;
+    }
+    return prev!.value;
+  }
+
+  public printMiddle() {
+    if (this.isEmpty()) throw new Error('IllegalStateException');
+    let current = this.first?.next;
+    let prev = this.first;
+    while (current) {
+      if (!current.next) return [prev?.value, prev?.next?.value];
+      current = current.next.next;
+      prev = prev!.next;
+    }
+    return prev?.value;
+  }
+
+  public hasLoop(): boolean {
+    if (this.isEmpty()) return false;
+
+    let current = this.first;
+    let next = this.first;
+
+    while (current) {
+      if (next === current) return true;
+      current = current!.next;
+      next = next!.next;
+    }
+    return false;
+  }
+  public createLoop() {
+    this.last!.next = this.first;
+  }
+  // public createLoopToK(k: number): void {}
+
+  private isEmpty() {
+    return this.size === 0;
+  }
+
+  public stringify(): string {
+    let parts: string[] = [];
+    for (const val of this) {
+      parts.push(val.toString());
+    }
+    return parts.join(' -> ');
+  }
 
   *[Symbol.iterator](): IterableIterator<string> {
     let current = this.first;
