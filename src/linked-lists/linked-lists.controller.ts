@@ -16,6 +16,12 @@ export class LinkedListsController {
     return this.linkedListsService.addRandom();
   }
 
+  @Get('all')
+  @ApiOperation({ summary: 'Get middle node' })
+  getAll() {
+    return this.linkedListsService.getAll();
+  }
+
   @Post('addLast')
   @ApiOperation({ summary: 'Add value to end of linked list' })
   @ApiBody({ type: AddValueDto })

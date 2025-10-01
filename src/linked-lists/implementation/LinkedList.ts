@@ -208,6 +208,10 @@ export class LinkedList {
     return parts.join(' -> ');
   }
 
+  public PrintAll(): ListNode | null {
+    return this.first;
+  }
+
   *[Symbol.iterator](): IterableIterator<string> {
     let current = this.first;
 

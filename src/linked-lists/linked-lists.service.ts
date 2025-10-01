@@ -19,6 +19,10 @@ export class LinkedListsService {
     return this.linkedList.stringify();
   }
 
+  getAll() {
+    return this.linkedList.PrintAll();
+  }
+
   addFirst(value: number) {
     this.linkedList.addFirst(value);
     return this.linkedList.stringify();
