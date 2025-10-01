@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLinkedListDto } from './dto/create-linked-list.dto';
-import { UpdateLinkedListDto } from './dto/update-linked-list.dto';
+
+import { LinkedList } from './implementation/LinkedList';
 
 @Injectable()
 export class LinkedListsService {
-  create(createLinkedListDto: CreateLinkedListDto) {
-    return 'This action adds a new linkedList';
+  constructor(private linkedList: LinkedList) {}
+  addLast(value: number): any {
+    this.linkedList.addLast(value);
+    return this.stringifyList(); // or return current linkedList content
+  }
+
+  addFirst(value: number): any {
+    this.linkedList.addFirst(value);
+    return this.stringifyList();
   }
 
   findAll() {
-    return `This action returns all linkedLists`;
+    return this.stringifyList();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} linkedList`;
   }
 
-  update(id: number, updateLinkedListDto: UpdateLinkedListDto) {
-    return `This action updates a #${id} linkedList`;
-  }
-
   remove(id: number) {
     return `This action removes a #${id} linkedList`;
+  }
+  private stringifyList(): string {
+    return `{ ${[...this.linkedList].join(' -> ')} }`;
   }
 }
