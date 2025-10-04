@@ -9,7 +9,11 @@ import path from 'path';
 
 (async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   app.setGlobalPrefix('api');
   // app.use();
   app.enableCors({ origin: '*' });
@@ -19,12 +23,12 @@ import path from 'path';
   );
   const options = new DocumentBuilder()
     .setTitle('this is documentation for api`s')
-   .setDescription(
-  'DSA_PlayGround is an interactive environment for exploring Data Structures and Algorithms ' +
-    'implemented in TypeScript. Each API endpoint lets you test, run, and experiment with ' +
-    'different DSA concepts — from basics to advanced — so you can learn, practice, and ' +
-    'understand how they work.',
-)
+    .setDescription(
+      'DSA_PlayGround is an interactive environment for exploring Data Structures and Algorithms ' +
+        'implemented in TypeScript. Each API endpoint lets you test, run, and experiment with ' +
+        'different DSA concepts — from basics to advanced — so you can learn, practice, and ' +
+        'understand how they work.',
+    )
     .setVersion('1.0.0')
 
     .build();

@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStackDto } from './dto/create-stack.dto';
-import { UpdateStackDto } from './dto/update-stack.dto';
+import { Stack } from './implementation/Stack';
 
 @Injectable()
 export class StackService {
-  create(createStackDto: CreateStackDto) {
-    return 'This action adds a new stack';
+  constructor(private readonly stack: Stack) {}
+
+  push(item: number) {
+    this.stack.push(item);
+    return { items: [...this.stack], size: this.stack.size };
   }
 
-  findAll() {
-    return `This action returns all stack`;
+  pop() {
+    const value = this.stack.pop();
+    return { popped: value, size: this.stack.size };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} stack`;
+  peek() {
+    return { top: this.stack.peek() };
   }
 
-  update(id: number, updateStackDto: UpdateStackDto) {
-    return `This action updates a #${id} stack`;
+  min() {
+    return { min: this.stack.min() };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stack`;
+  isEmpty() {
+    return { isEmpty: this.stack.isEmpty() };
+  }
+
+  isFull() {
+    return { isFull: this.stack.isFull() };
+  }
+
+  size() {
+    return { size: this.stack.size };
   }
 }

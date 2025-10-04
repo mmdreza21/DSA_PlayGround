@@ -4,7 +4,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { LinkedListsService } from './linked-lists.service';
 import { AddValueDto } from './dto/add-value.dto';
 
-@ApiTags('2-Linked Lists')
+@ApiTags('02-Linked Lists')
 @Controller('linked-lists')
 export class LinkedListsController {
   constructor(private readonly linkedListsService: LinkedListsService) {}
