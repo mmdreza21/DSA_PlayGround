@@ -2,6 +2,7 @@ import { Controller, Post, Get, Body } from '@nestjs/common';
 import { StackService } from './stack.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { PushToStackDTO } from './dto/push-to-stack.dto';
+import { ExpressionDto } from './dto/Expression.dto';
 
 @ApiTags('03-Stack')
 @Controller('stack')
@@ -51,5 +52,16 @@ export class StackController {
   @ApiOperation({ summary: 'Get the current size of the stack' })
   size() {
     return this.stackService.size();
+  }
+
+  @Post('check-balance')
+  @ApiOperation({ summary: 'Check if an expression has balanced brackets' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns whether the given expression is balanced',
+  })
+  @ApiBody({ type: ExpressionDto })
+  checkBalance(@Body() dto: ExpressionDto) {
+    return this.stackService.checkBalance(dto.text);
   }
 }

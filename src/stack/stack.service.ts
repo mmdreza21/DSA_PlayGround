@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Stack } from './implementation/Stack';
+import { Expression } from './implementation/Expression';
 
 @Injectable()
 export class StackService {
-  constructor(private readonly stack: Stack) {}
+  constructor(
+    private readonly stack: Stack<number>,
+    private readonly expression: Expression,
+  ) {}
 
   push(item: number) {
     this.stack.push(item);
@@ -33,5 +37,13 @@ export class StackService {
 
   size() {
     return { size: this.stack.size };
+  }
+
+  checkBalance(text: string) {
+    const isBalanced = this.expression.checkBalance(text);
+    return {
+      expression: text,
+      balanced: isBalanced,
+    };
   }
 }

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
-export class Stack {
-  private items: Array<number>;
+export class Stack<T> {
+  private items: Array<T>;
   private _size: number = 0;
 
   private readonly STACK_CAPACITY: number = 10;
@@ -11,18 +11,18 @@ export class Stack {
     this.items = new Array(this.STACK_CAPACITY).fill(0);
   }
 
-  public push(item: number) {
+  public push(item: T) {
     if (this._size > this.STACK_CAPACITY)
       throw new BadRequestException('STACK OVERFLOW!!');
-    this.items[this.size++] = item;
+    this.items[this._size++] = item;
   }
 
-  public pop(): number | null {
+  public pop(): T | null {
     if (this.isEmpty()) return null;
-    return this.items[--this.size];
+    return this.items[--this._size];
   }
 
-  public peek(): number | null {
+  public peek(): T | null {
     if (this.isEmpty()) return null;
     return this.items[this.size - 1];
   }
@@ -48,11 +48,8 @@ export class Stack {
   public get size(): number {
     return this._size;
   }
-  public set size(value: number) {
-    this._size = value;
-  }
 
-  *[Symbol.iterator](): IterableIterator<number> {
+  *[Symbol.iterator](): IterableIterator<T> {
     for (const item of this.items) {
       yield item;
     }
