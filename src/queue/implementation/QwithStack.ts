@@ -1,6 +1,6 @@
 import { Stack } from 'src/stack/implementation/Stack';
 
-class QWithStack<T> {
+export class QWithStack<T> {
   private items: T[];
   private _size: number = 0;
 
